@@ -1,30 +1,27 @@
 <?php 
 
-require 'classes/Book.php';
-require 'classes/Publisher.php';
+require __DIR__.'classes/Book.php';
+require __DIR__.'classes/Publisher.php';
+require __DIR__.'classes/Ebook.php';
 
 use Artemis\Book;
+use Artemis\Ebook;
 use Artemis\Publisher;
 
-// Instanciations
-$editeur_1 = new Publisher(1, 'Gallimard');
-$editeur_2 = new Publisher(2, 'Hachette');
-$editeur_3 = new Publisher(3, 'Nathan');
-$livre_1 = new Book(
-    1, 
-    'Le seigneur des anneaux', 
-    'Un livre de fantaisie', 
-    '123456789',
-    1, 
-    2);
+$ebook = new Ebook(
+    2,
+    'Macron à la plage',
+    'Les aventures du président',
+    '123-334-123',
+    3,
+    3
+);
 
-// Affichage
-echo 'Voici le livre : ' . $livre_1->getTitle() . '<br>';
-echo 'Il est publié par la maison d\'édition : ' . null . '<br>';
+$ebooks->setIsAugmented(true)
+        ->setAvailability(30)
+        ->setIsDownloadable(false);
 
-var_dump($livre_1);
-
-
+var_dump($ebook);
 die();
 
 
