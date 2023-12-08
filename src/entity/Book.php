@@ -7,6 +7,12 @@
 
 namespace Artemis;
 
+require __DIR__.'/../controller/Database.php';
+
+use PDO;
+use Artemis\Databse;
+use Artemis\Database;
+
 class Book
 {
     // Properties
@@ -18,9 +24,14 @@ class Book
     public int $publisher_id;
 
     // Constructor
-    public function __construct(int $id, string $title, string $description, string $ISBN, int $author_id, int $publisher_id
-        )
-    {
+    public function __construct(
+        int $id,
+        string $title,
+        string $description,
+        string $ISBN,
+        int $author_id,
+        int $publisher_id
+    ) {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
@@ -37,7 +48,6 @@ class Book
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -48,9 +58,8 @@ class Book
     public function setTitle($title)
     {
         $this->title = $title;
-
         return $this;
-    } 
+    }
 
     public function getDescription()
     {
@@ -59,9 +68,8 @@ class Book
     public function setDescription($description)
     {
         $this->description = $description;
-
         return $this;
-    } 
+    }
 
     public function getISBN()
     {
@@ -70,9 +78,8 @@ class Book
     public function setISBN($ISBN)
     {
         $this->ISBN = $ISBN;
-
         return $this;
-    } 
+    }
 
     public function getAuthor_id()
     {
@@ -81,7 +88,6 @@ class Book
     public function setAuthor_id($author_id)
     {
         $this->author_id = $author_id;
-
         return $this;
     }
 
@@ -92,34 +98,51 @@ class Book
     public function setPublisher_id($publisher_id)
     {
         $this->publisher_id = $publisher_id;
-
         return $this;
     }
 
-
-    // Method
-    public function getAllBooks()
+    // Methods
+    /**
+     * Méthode statique permettant de récupérer tous les livres
+     * Ne prend aucun paramètre
+     * Retourne un tableau associatif
+     */
+    static public function getAllBooks(): array
     {
-        // Code pour récuperer tous les livres
+        // SELECT * FROM Book;
+        $pdo = Database::getPDO(); // Connexion
+        $query = $pdo->prepare("SELECT * FROM Book;"); // Requete SQL
+        $query->execute(); // Execution de la requete
+        $books = $query->fetchAll(PDO::FETCH_ASSOC); // Conversion en Tableau ASSOC
+        return $books; // Envoie du tableau hors scope
     }
-    public function getOneBook()
-    {
 
-    }
-    public function addBook()
+    static public function getOneBook()
     {
-        
+        $pdo = Database::getPDO();
+        $query = "SELECT
+                    Book.title AS BookTitle,
+                    Author.name AS AuthorName,
+                    Publisher.name AS PublisherName
+                FROM Book JOIN Author ON Book.author_id = Author.id
+                JOIN Publisher ON Book.publisher_id = Publisher.id
+                WHERE Book.id = 1;";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $book = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $book;
+    }
+    static public function addBook()
+    {
+        // Code
     }
     public function editBook()
     {
-        
+        // Code
     }
     public function deleteBook()
     {
-        
+        // Code
     }
-
-
-    
 }
 // Code interdit après l'accolade
